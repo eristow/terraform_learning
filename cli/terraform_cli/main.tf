@@ -2,52 +2,73 @@ provider "aws" {
   region = var.region
 }
 
-provider "random" {}
-
-provider "time" {}
-
-resource "random_pet" "instance" {
-  length    = 3
-  separator = "-"
-  prefix    = "project"
+provider "docker" {
+  host = "unix:///var/run/docker.sock"
 }
 
+resource "docker_image" "nginx" {
+  name = "nginx:latest"
+}
 
-# VPC setup
-data "aws_availability_zones" "available" {
-  state = "available"
-
-  filter {
-    name   = "opt-in-status"
-    values = ["opt-in-not-required"]
+resource "docker_container" "web" {
+  env          = []
+  image        = docker_image.nginx.image_id
+  name         = "hashicorp-learn"
+  network_mode = "bridge"
+  ports {
+    external = 8081
+    internal = 80
+    ip       = "0.0.0.0"
+    protocol = "tcp"
   }
 }
 
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "5.13.0"
+# provider "random" {}
 
-  cidr = var.vpc_cidr_block
+# provider "time" {}
 
-  azs             = data.aws_availability_zones.available.names
-  private_subnets = slice(var.private_subnet_cidr_blocks, 0, 1)
-  public_subnets  = slice(var.public_subnet_cidr_blocks, 0, 1)
+# resource "random_pet" "instance" {
+#   length    = 3
+#   separator = "-"
+#   prefix    = "project"
+# }
 
-  enable_nat_gateway = true
-  enable_vpn_gateway = false
-}
 
-module "app_security_group" {
-  source  = "terraform-aws-modules/security-group/aws//modules/web"
-  version = "5.2.0"
+# VPC setup
+# data "aws_availability_zones" "available" {
+#   state = "available"
 
-  name        = "web-server-sg"
-  description = "Security group for web-servers with HTTP ports open within VPC"
-  vpc_id      = module.vpc.vpc_id
+#   filter {
+#     name   = "opt-in-status"
+#     values = ["opt-in-not-required"]
+#   }
+# }
 
-  ingress_cidr_blocks = module.vpc.public_subnets_cidr_blocks
-  egress_cidr_blocks  = ["0.0.0.0/0"]
-}
+# module "vpc" {
+#   source  = "terraform-aws-modules/vpc/aws"
+#   version = "5.13.0"
+
+#   cidr = var.vpc_cidr_block
+
+#   azs             = data.aws_availability_zones.available.names
+#   private_subnets = slice(var.private_subnet_cidr_blocks, 0, 1)
+#   public_subnets  = slice(var.public_subnet_cidr_blocks, 0, 1)
+
+#   enable_nat_gateway = true
+#   enable_vpn_gateway = false
+# }
+
+# module "app_security_group" {
+#   source  = "terraform-aws-modules/security-group/aws//modules/web"
+#   version = "5.2.0"
+
+#   name        = "web-server-sg"
+#   description = "Security group for web-servers with HTTP ports open within VPC"
+#   vpc_id      = module.vpc.vpc_id
+
+#   ingress_cidr_blocks = module.vpc.public_subnets_cidr_blocks
+#   egress_cidr_blocks  = ["0.0.0.0/0"]
+# }
 
 # module "lb_security_group" {
 #   source  = "terraform-aws-modules/security-group/aws//modules/web"

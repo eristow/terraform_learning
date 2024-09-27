@@ -79,6 +79,11 @@
   * `terraform plan -destroy -out "[output file]"`
   * `terraform apply "[output file]"`
 
+* Import resources into Terraform:
+  * `terraform plan -generate-config-out=generated.tf`
+  * Use with `import` blocks
+  * Make sure to prune the generated config file to only the arguments needed and arguments that differ from default
+
 ---
 
 ## terraform apply
@@ -154,6 +159,7 @@
 
 ## terraform import
 * Imports existing infrastructure into Terraform
+* Existing resources can also be imported using configuration, the `import` block, and the plan/apply workflow
 
 * `terraform import [resource_type].[resource_name] [resource_id]`
   * `resource_type` is the type of resource to import
