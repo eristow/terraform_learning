@@ -5,6 +5,9 @@
 	* Points to local modules via the source attribute
   * Downloads the external modules from the registry
 
+* `-upgrade` flag: upgrades providers to latest version compliant with version constraints in configuration
+  * Can also downgrade if version constraints are adjusted to a lower version in the configuration
+
 * Finds all provider plugins and initializes them
   * Downloads the provider plugins from the registry
   * Versioning:
@@ -18,8 +21,6 @@
   * Add, remove, change the version of a module or provider in an existing workspace.
   * Add, remove, change the `backend` or `cloud` blocks within the `terraform` block of an existing workspace.
 
-### terraform validate
-* Checks configuration files for any syntax errors
 
 ### .terraform.lock.hcl
 * Ensures versioning consistency across environments
@@ -29,6 +30,11 @@
 * An auto-managed directory that stores the project's providers and modules.
 * `modules.json`:
   * Contains the Key, Source, and Dir of each module.
+
+---
+
+## terraform validate
+* Checks configuration files for any syntax errors
 
 ---
 
@@ -102,18 +108,63 @@
     * No roll back support, so the `apply` must be fully re-run after the error is fixed
 
 * `-replace` flag:
+  * Recreates the resource even if no changes are detected
   * Use when a resource has become degraded or has stopped behaving how Terraform expects.
   * Or when fixing an error preventing Terraform for applying the entire config at once
   * Find a resource's address with `terraform state list`
 
 * `-target` flag:
+  * Can be used with `plan` and `destroy`.
+  * Multiple `-target` flags can be used to target multiple resources
   * `apply` to specific resources instead of the entire config
+  * Shouldn't be part of the typical workflow
+  * Useful for when Terraform's state is out of sync with resources and troubleshooting
 
 ---
 
 ## terraform console
 * Interactive console for evaluating expressions
   * Can be used to test interpolations and functions
+
+---
+
+## terraform output
+* Displays the outputs defined in root and child modules output files
+* `output [output_name]` to display a specific output
+* `-raw` flag to remove quotes from the output
+* `-json` flag to output in JSON format
+* Use `grep --after-context=10 outputs terraform.tfstate` to find outputs in the local state file
+  * `aws s3 cp s3://[bucket]/[key] - | jq .outputs` to view outputs in a remote state file
+
+---
+
+## terraform show
+* Displays the current state of the resources in the workspace
+
+---
+
+## terraform state
+* `list`:
+  * Displays all resources in the state file
+* `mv`:
+  * Moves or renames a resource to a new state file
+  * Useful for combining modules or resources from other states, but don't want to destroy and recreate them
+
+---
+
+## terraform import
+* Imports existing infrastructure into Terraform
+
+* `terraform import [resource_type].[resource_name] [resource_id]`
+  * `resource_type` is the type of resource to import
+  * `resource_name` is the name of the resource to import
+  * `resource_id` is the ID of the resource to import
+
+---
+
+## terraform refresh
+* Updates the state file with the current state of the resources in the workspace
+* Automatically performed during `plan`, `apply`, and `destroy`
 
 ---
 
