@@ -35,6 +35,12 @@
 
 ## terraform validate
 * Checks configuration files for any syntax errors
+* Use after `terraform fmt` to check configuration in the context of the providers' expectations
+
+---
+
+## terraform fmt
+* Checks configuration files for interpolation errors or malformed resource definitions
 
 ---
 
@@ -84,6 +90,10 @@
   * Use with `import` blocks
   * Make sure to prune the generated config file to only the arguments needed and arguments that differ from default
 
+* `-refresh-only` flag: (also for `apply`)
+  * Only refresh the state file without creating a plan
+  * Compared to `terraform refresh`, the flag allows you to review the changes before they are applied to the state file
+
 ---
 
 ## terraform apply
@@ -131,6 +141,13 @@
 * Interactive console for evaluating expressions
   * Can be used to test interpolations and functions
 
+* `file()` function:
+  * Load file's contents into a string
+
+* `jsondecode()` function:
+  * Parse a JSON string into an HCL map
+  * `jsonencode()` function does the opposite
+
 ---
 
 ## terraform output
@@ -169,6 +186,7 @@
 ---
 
 ## terraform refresh
+* DEPRECATED: Use `terraform plan/apply -refresh-only` instead
 * Updates the state file with the current state of the resources in the workspace
 * Automatically performed during `plan`, `apply`, and `destroy`
 

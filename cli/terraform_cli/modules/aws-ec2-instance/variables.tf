@@ -8,15 +8,15 @@ variable "instance_name_prefix" {
   type        = string
 }
 
-variable "subnet_ids" {
-  description = "List of subnet IDs for EC2 instances"
-  type        = list(string)
-}
+# variable "subnet_ids" {
+#   description = "List of subnet IDs for EC2 instances"
+#   type        = list(string)
+# }
 
-variable "security_group_ids" {
-  description = "List of security groupd IDs for EC2 instances"
-  type        = list(string)
-}
+# variable "security_group_ids" {
+#   description = "List of security groupd IDs for EC2 instances"
+#   type        = list(string)
+# }
 
 variable "project_name" {
   description = "Name of the example project"

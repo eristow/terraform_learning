@@ -2,36 +2,36 @@ provider "aws" {
   region = var.region
 }
 
-provider "docker" {
-  host = "unix:///var/run/docker.sock"
-}
-
-resource "docker_image" "nginx" {
-  name = "nginx:latest"
-}
-
-resource "docker_container" "web" {
-  env          = []
-  image        = docker_image.nginx.image_id
-  name         = "hashicorp-learn"
-  network_mode = "bridge"
-  ports {
-    external = 8081
-    internal = 80
-    ip       = "0.0.0.0"
-    protocol = "tcp"
-  }
-}
-
-# provider "random" {}
-
-# provider "time" {}
-
-# resource "random_pet" "instance" {
-#   length    = 3
-#   separator = "-"
-#   prefix    = "project"
+# provider "docker" {
+#   host = "unix:///var/run/docker.sock"
 # }
+
+# resource "docker_image" "nginx" {
+#   name = "nginx:latest"
+# }
+
+# resource "docker_container" "web" {
+#   env          = []
+#   image        = docker_image.nginx.image_id
+#   name         = "hashicorp-learn"
+#   network_mode = "bridge"
+#   ports {
+#     external = 8081
+#     internal = 80
+#     ip       = "0.0.0.0"
+#     protocol = "tcp"
+#   }
+# }
+
+provider "random" {}
+
+provider "time" {}
+
+resource "random_pet" "instance" {
+  length    = 3
+  separator = "-"
+  prefix    = "project"
+}
 
 
 # VPC setup
@@ -106,27 +106,28 @@ resource "docker_container" "web" {
 #   source = "./modules/aws-ec2-instance"
 
 #   instance_name_prefix = random_pet.instance.id
-#   instance_count       = var.instances_per_subnet * length(module.vpc.private_subnets)
-#   subnet_ids           = module.vpc.private_subnets[*]
-#   security_group_ids   = [module.app_security_group.security_group_id]
+#   instance_count       = 1
+#   # instance_count       = var.instances_per_subnet * length(module.vpc.private_subnets)
+#   # subnet_ids           = module.vpc.private_subnets[*]
+#   # security_group_ids   = [module.app_security_group.security_group_id]
 # }
 
 
 # S3 setup
-# module "s3_bucket" {
-#   source = "./modules/aws-s3-bucket"
+module "s3_bucket" {
+  source = "./modules/aws-s3-bucket"
 
-#   bucket_name = "eristow-terraform-s3-bucket"
-# }
+  bucket_name = "eristow-terraform-s3-bucket"
+}
 
-# resource "aws_s3_object" "example" {
-#   bucket = module.s3_bucket.bucket_name
+resource "aws_s3_object" "example" {
+  bucket = module.s3_bucket.bucket_name
 
-#   key    = "README.md"
-#   source = "./README.md"
+  key    = "README.md"
+  source = "./README.md"
 
-#   etag = filemd5("./README.md")
-# }
+  etag = filemd5("./README.md")
+}
 
 
 # RDS setup
