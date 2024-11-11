@@ -127,6 +127,7 @@
   * Use when a resource has become degraded or has stopped behaving how Terraform expects.
   * Or when fixing an error preventing Terraform for applying the entire config at once
   * Find a resource's address with `terraform state list`
+  * Can also be used with `terraform plan`
 
 * `-target` flag:
   * Can be used with `plan` and `destroy`.
@@ -171,6 +172,8 @@
 * `mv`:
   * Moves or renames a resource to a new state file
   * Useful for combining modules or resources from other states, but don't want to destroy and recreate them
+  * Example: `terraform state mv -state-out=../terraform.tfstate aws_instance.example_new aws_instance.example_new` where the first argument is the source and the second is the destination
+    * Resources must be unique, so `mv` can rename resources as well
 
 ---
 

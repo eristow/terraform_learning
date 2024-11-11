@@ -23,8 +23,8 @@ terraform {
 }
 
 provider "aws" {
-  profile = var.aws_profile
-  region  = var.main_aws_region
+  # profile = var.aws_profile
+  region = var.main_aws_region
 }
 
 resource "random_pet" "petname" {

@@ -1,7 +1,7 @@
-variable "aws_profile" {
-  description = "The AWS profile to use"
-  type        = string
-}
+# variable "aws_profile" {
+#   description = "The AWS profile to use"
+#   type        = string
+# }
 
 variable "main_aws_region" {
   description = "The AWS region to use"
