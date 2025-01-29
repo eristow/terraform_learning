@@ -195,6 +195,17 @@
 
 ---
 
+## terraform graph
+* Displays the dependency graph for all resources in the current config
+
+---
+
+## terraform login
+* Automatically obtain and save an API token for HCP Terraform, Terraform Enterprise, or other host with Terraform services
+* By default, API token is saved in `credentials.tfrc.json`
+
+---
+
 ## Terraform Variables
 * Typically defined in a separate `variables.tf` file.
 * Interpolation: `${var.[variable_name]}`
