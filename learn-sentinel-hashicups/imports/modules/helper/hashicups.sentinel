@@ -1,0 +1,21 @@
+valid_coffees = [
+	"HCP Aeropress",
+	"Packer Spiced Latte",
+  "Vaulatte",
+  "Nomadicano",
+  "Terraspresso",
+  "Vagrante espresso",
+  "Connectaccino",
+  "Boundary Red Eye",
+  "Waypointiato",
+]
+
+valid_sizes = ["small", "medium", "large"]
+
+func validate_name(name) {
+	return name in valid_coffees
+}
+
+func validate_size(size) {
+	return size in valid_sizes
+}

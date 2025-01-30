@@ -1,0 +1,14 @@
+{
+  "items": [
+    {
+      "name": "Vaulatte",
+      "size": "medium",
+      "quantity": 2
+    },
+    {
+      "name": "Nomadicano",
+      "size": "large",
+      "quantity": 1
+    }
+  ]
+}

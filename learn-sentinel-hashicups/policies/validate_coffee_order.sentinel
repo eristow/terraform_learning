@@ -1,0 +1,9 @@
+import "hashicups"
+import "order"
+
+main = rule {
+	all order.items as item {
+		hashicups.validate_name(item.name) and
+		hashicups.validate_size(item.size)
+	}
+}
